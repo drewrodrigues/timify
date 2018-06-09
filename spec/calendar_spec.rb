@@ -13,16 +13,16 @@ RSpec.describe Calendar do
     context 'valid event' do
       it 'increments events' do
         expect {
-          calendar.add_event(TimeRange.new(0.0, 0.3), 'Fitness')
+          calendar.add_event(0.0, 0.3, 'Fitness')
         }.to change(calendar.events, :count).by(1)
       end
     end
 
     context 'invalid event' do
       it 'returns false' do
-        calendar.add_event(TimeRange.new(0.0, 0.3), 'Study')
+        calendar.add_event(0.0, 0.3, 'Study')
 
-        expect(calendar.add_event(TimeRange.new(0.0, 0.3), 'Reading')).to be_falsey
+        expect(calendar.add_event(0.0, 0.3, 'Reading')).to be_falsey
       end
     end
   end
@@ -30,11 +30,11 @@ RSpec.describe Calendar do
   describe '#remove_event' do
     context 'valid event' do
       it 'returns true' do
-        expect(calendar.add_event(TimeRange.new(0.0, 0.3), 'Study')).to be_truthy
+        expect(calendar.add_event(0.0, 0.3, 'Study')).to be_truthy
       end
 
       it 'decrements events' do
-        calendar.add_event(TimeRange.new(0.0, 0.3), 'Study')
+        calendar.add_event(0.0, 0.3, 'Study')
 
         expect {
           calendar.remove_event(0.0)
@@ -44,7 +44,7 @@ RSpec.describe Calendar do
 
     context 'invalid event' do
       it 'returns false' do
-        calendar.add_event(TimeRange.new(0.0, 0.3), 'Study')
+        calendar.add_event(0.0, 0.3, 'Study')
 
         expect(calendar.remove_event(0.3)).to be_falsey
       end

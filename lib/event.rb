@@ -1,8 +1,8 @@
 class Event
   attr_reader :category, :time_range
 
-  def initialize(time_range, category)
-    @time_range = time_range
+  def initialize(start, stop, category)
+    @time_range = TimeRange.new(start, stop)
     @category = category
   end
 

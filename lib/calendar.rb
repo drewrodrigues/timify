@@ -1,3 +1,8 @@
+require_relative 'event'
+
+# Calendar is a manager for events which provides validations for whether
+# it can be added or not based upon interesecting event times of already
+# existing events.
 class Calendar
   attr_reader :events
 
@@ -5,10 +10,10 @@ class Calendar
     @events = []
   end
 
-  def add_event(time_range, category)
-    event = Event.new(time_range, category)
-    return false unless saveable?(event)
-    events << Event.new(time_range, category)
+  def add_event(start, stop, category)
+    event = Event.new(start, stop, category)
+    # return false unless saveable?(event)
+    events << event
   end
 
   def remove_event(start)
@@ -26,26 +31,5 @@ class Calendar
 
   private
 
-  def saveable?(event)
-    events.each do |e|
-      return false unless non_intersecting_time?(event, e)
-    end
-    true
-  end
-
-  def non_intersecting_time?(event, other_event)
-    return true unless start_time_intersects_event?(event, other_event) || end_time_intersects_event?(event, other_event) || same_time(event, other_event)
-  end
-
-  def start_time_intersects_event?(event, other_event)
-    event.start < other_event.stop && event.start > other_event.start
-  end
-
-  def end_time_intersects_event?(event, other_event)
-    event.stop < other_event.stop && event.stop > other_event.start
-  end
-
-  def same_time(event, other_event)
-    event.start == other_event.start && event.stop == other_event.stop
-  end
+  def saveable?(event); end
 end
