@@ -6,11 +6,11 @@ RSpec.describe TimeRange do
 
   describe 'attributes' do
     it 'has a start time' do
-      expect(time_range.start.class).to eq(Clock)
+      expect(time_range.respond_to?(:start)).to be true
     end
 
     it 'has a stop time' do
-      expect(time_range.stop.class).to eq(Clock)
+      expect(time_range.respond_to?(:stop)).to be true
     end
   end
 

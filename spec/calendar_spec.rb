@@ -28,25 +28,25 @@ RSpec.describe Calendar do
   end
 
   describe '#remove_event' do
+    before do
+      calendar.add_event(0.0, 0.3, 'Study')
+    end
+
     context 'valid event' do
       it 'returns true' do
-        expect(calendar.add_event(0.0, 0.3, 'Study')).to be_truthy
+        expect(calendar.remove_event('0:00')).to be_truthy
       end
 
       it 'decrements events' do
-        calendar.add_event(0.0, 0.3, 'Study')
-
         expect {
-          calendar.remove_event(0.0)
+          calendar.remove_event('0:00')
         }.to change(calendar.events, :count).by(-1)
       end
     end
 
     context 'invalid event' do
       it 'returns false' do
-        calendar.add_event(0.0, 0.3, 'Study')
-
-        expect(calendar.remove_event(0.3)).to be_falsey
+        expect(calendar.remove_event('0:30')).to be_falsey
       end
     end
   end

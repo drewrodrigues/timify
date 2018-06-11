@@ -1,20 +1,21 @@
-class Event
-  attr_reader :category, :time_range
+require_relative 'time_range'
+
+class Event < TimeRange
+  attr_reader :category
 
   def initialize(start, stop, category)
-    @time_range = TimeRange.new(start, stop)
+    super(start, stop)
     @category = category
   end
 
   def to_s
-    "#{@category}: #{@time_range}"
+    "#{@category}: #{super}"
   end
 
-  def start
-    @time_range.start
-  end
-
-  def stop
-    @time_range.stop
+  def intersects?(other_event)
+    [other_event.start, other_event.stop].each do |time|
+      return true if (time < stop && time > start) || self == other_event
+    end
+    false
   end
 end

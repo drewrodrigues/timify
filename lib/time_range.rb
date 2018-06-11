@@ -32,16 +32,21 @@ class TimeRange
     @stop = temp_stop
   end
 
+  def ==(other)
+    raise ArgumentError, 'Must pass a TimeRange' unless other.is_a?(TimeRange)
+    @start == other.start && @stop == other.stop
+  end
+
   private
 
   def ensure_valid_start(start)
     return true unless @stop
-    raise ArgumentError, 'Start time must be < stop time' if start > @stop
+    raise ArgumentError, 'Start time must be < stop time' if start > @stop 
   end
 
   def ensure_valid_stop(stop)
     return true unless @start
-    raise ArgumentError, 'Stop time must be > start time' if @start > stop
+    raise ArgumentError, 'Stop time must be > start time' if @start > stop && stop != Clock.new(0, 0)
   end
 
   def decimal_of(number)

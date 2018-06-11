@@ -6,8 +6,12 @@ class Category
     self.percent = percent
   end
 
+  def to_s
+    "#{@title}: #{@percent}%"
+  end
+
   def percent=(percent)
     raise ArgumentError, 'Percent must be 1-100' unless percent.between?(1, 100)
-    @percent = percent
+    @percent = percent * 0.01
   end
 end

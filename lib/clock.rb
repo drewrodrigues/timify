@@ -1,3 +1,24 @@
+require 'byebug'
+
+# Clock is a simple implementation of holding hours (0-23) and minutes (0-59).
+# ------------------------------------------------------------------------------
+# Clock.new(integer, integer)
+# - Creates a clock object with hours and minutes.
+# >> c = Clock.new(5, 30)
+#
+# >> c = Clock.new(14, 30)
+#
+# to_s
+# - Prints hours and minutes with padding on minutes if necessary.
+# >> puts c
+# => "14:30"
+#
+# +(Float/Integer)
+# - Adds the integer portion to hours and the decimal portion to minutes.
+# >> c + 1
+# => "15:30"
+# >> c + 0.30
+# => "16:00"
 class Clock
   include Comparable
 
@@ -20,9 +41,12 @@ class Clock
     "#{@hours}:#{padded_minutes}"
   end
 
+  def to_f
+    @hours.to_i + @minutes * 0.01
+  end
+
   def hours=(hours)
-    raise ArgumentError if hours.negative?
-    @hours = if hours > 23
+    @hours = if hours > 23 || hours < 0
                hours % 24
              else
                hours
@@ -30,9 +54,11 @@ class Clock
   end
 
   def minutes=(minutes)
-    raise ArgumentError if minutes.negative?
     @minutes = if minutes >= 60
                  @hours += 1
+                 minutes % 60
+               elsif minutes < 0
+                 @hours += minutes / 60
                  minutes % 60
                else
                  minutes
@@ -45,24 +71,28 @@ class Clock
   end
 
   def +(other)
+    self_dup = dup
     if other.is_a?(Integer)
-      @hours += other
+      self_dup.hours += other
     elsif other.is_a?(Float)
-      @hours += other.to_i
-      @minutes += (other % 1 * 100).to_i
+      self_dup.hours += other.to_i
+      self_dup.minutes += (other % 1 * 100).to_i
     else
       non_number_error
     end
+    self_dup
   end
 
   def -(other)
+    self_dup = dup
     if other.is_a?(Integer)
-      @hours -= other
+      self_dup.hours -= other
     elsif other.is_a?(Float)
-      @minutes -= (other % 1 * 100).to_i
+      self_dup.minutes -= (other % 1 * 100).to_i
     else
       non_number_error
     end
+    self_dup
   end
 
   private
